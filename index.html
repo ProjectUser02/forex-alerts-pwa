@@ -4,6 +4,24 @@
   <button id="enablePush">Push aktivieren</button>
 
   <script>
+    const publicVapidKey = "BJH4Rlm_AaN6GBPRQ4yc6GJtMeRAS-Cfqe9mOFrre0L9PjTYKK73JY5epRDngaJS3WxAppuC82pg8CwR8jqxAJw";
+
+    // 🔧 Pflicht-Funktion für Web Push
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js");
     }
@@ -12,6 +30,7 @@
     const btn = document.getElementById("enablePush");
 
     btn.addEventListener("click", async () => {
+
       if (!("Notification" in window)) {
         statusEl.innerText = "Push nicht unterstützt";
         return;
@@ -32,11 +51,11 @@
       });
 
       alert(JSON.stringify(subscription));
-
-      statusEl.innerText = "Push aktiviert (siehe Konsole)";
+      statusEl.innerText = "Push aktiviert";
     });
   </script>
 </body>
+
 
 
 
