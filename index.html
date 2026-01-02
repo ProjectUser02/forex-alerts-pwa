@@ -31,9 +31,11 @@
         applicationServerKey: "<HIER KOMMT DER VAPID KEY>"
       });
 
-      console.log("SUBSCRIPTION:", JSON.stringify(subscription));
+      alert(JSON.stringify(subscription));
+
       statusEl.innerText = "Push aktiviert (siehe Konsole)";
     });
   </script>
 </body>
+
 
