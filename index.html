@@ -28,7 +28,7 @@
 
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: "<HIER KOMMT DER VAPID KEY>"
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
       });
 
       alert(JSON.stringify(subscription));
@@ -37,5 +37,6 @@
     });
   </script>
 </body>
+
 
 
