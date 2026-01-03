@@ -50,11 +50,13 @@
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
       });
 
-      alert(JSON.stringify(subscription));
+      console.log(JSON.stringify(subscription));
+      document.body.innerHTML += `<pre>${JSON.stringify(subscription, null, 2)}</pre>`;
       statusEl.innerText = "Push aktiviert";
     });
   </script>
 </body>
+
 
 
 
