@@ -31,24 +31,27 @@
 
     btn.addEventListener("click", async () => {
 
-      if (!("Notification" in window)) {
-        statusEl.innerText = "Push nicht unterstützt";
-        return;
-      }
+  const registration = await navigator.serviceWorker.ready;
 
-      const permission = await Notification.requestPermission();
+  // 🔎 Prüfen, ob bereits eine Subscription existiert
+  const existingSub = await registration.pushManager.getSubscription();
 
-      if (permission !== "granted") {
-        statusEl.innerText = "Push abgelehnt";
-        return;
-      }
+  if (existingSub) {
+    statusEl.innerText = "Bestehende Subscription gefunden";
+    document.body.innerHTML += `<pre>${JSON.stringify(existingSub, null, 2)}</pre>`;
+    return;
+  }
 
-      const registration = await navigator.serviceWorker.ready;
+  // 🔔 Falls noch keine existiert → neu abonnieren
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+  });
 
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-      });
+  statusEl.innerText = "Neue Subscription erstellt";
+  document.body.innerHTML += `<pre>${JSON.stringify(subscription, null, 2)}</pre>`;
+});
+
 
       console.log(JSON.stringify(subscription));
       document.body.innerHTML += `<pre>${JSON.stringify(subscription, null, 2)}</pre>`;
@@ -56,6 +59,7 @@
     });
   </script>
 </body>
+
 
 
 
